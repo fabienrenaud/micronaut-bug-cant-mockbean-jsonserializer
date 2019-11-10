@@ -1,0 +1,52 @@
+plugins {
+    id "java"
+    id "application"
+    id "io.spring.dependency-management" version "1.0.6.RELEASE"
+    id "net.ltgt.apt-eclipse" version "0.21"
+    id "net.ltgt.apt-idea" version "0.21"
+    id "idea"
+}
+
+group = 'bug.micronaut'
+mainClassName = 'bug.micronaut.App'
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "io.micronaut:micronaut-bom:1.2.6"
+    }
+}
+
+dependencies {
+    compile group: 'io.micronaut', name: 'micronaut-http-server-netty'
+    compile group: 'io.micronaut', name: 'micronaut-validation'
+    runtime group: 'io.micronaut', name: 'micronaut-core'
+
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+    annotationProcessor "io.micronaut:micronaut-validation"
+
+    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+    testCompile "io.micronaut.test:micronaut-test-junit5"
+    testCompile "io.micronaut:micronaut-http-client"
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: "5.5.2"
+    testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: "5.5.2"
+    testCompile group: "org.mockito", name: "mockito-junit-jupiter", version: "2.22.0"
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        showStandardStreams = true
+        exceptionFormat = 'full'
+    }
+}
